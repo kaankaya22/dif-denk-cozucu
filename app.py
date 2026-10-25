@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import pandas as pd
 import ast
+import time
 #Euler
 def euler(f, x0, y0, h, n):
     x = np.zeros(n + 1)
@@ -168,18 +169,39 @@ if coz:
 
         st.success("Denklem başarıyla çözüldü!")
 # GRAFIK
+       
+
+        # CANLI GRAFIK
+        grafik_alani = st.empty()
+
         plt.figure(figsize=(10, 6))
 
-        plt.plot(x, y, "o-", label=yontem)
+        y_min = min(y)
+        y_max = max(y)
+        bosluk = max((y_max - y_min) * 0.1, 0.1)
 
-        plt.xlabel("x")
-        plt.ylabel("y")
-        plt.title("Sayısal Çözüm")
-        plt.legend()
-        plt.grid()
+        for i in range(1, len(x) + 1):
 
-        st.pyplot(plt.gcf())
+            plt.clf()
+
+            plt.plot(x[:i], y[:i], "o-", label=yontem)
+
+            plt.xlim(min(x), max(x))
+            plt.ylim(y_min - bosluk, y_max + bosluk)
+
+            plt.xlabel("x")
+            plt.ylabel("y")
+            plt.title("Canlı Sayısal Çözüm")
+            plt.legend()
+            plt.grid()
+
+            grafik_alani.pyplot(plt.gcf())
+
+            time.sleep(0.05)
+
         plt.close()
+
+
 
         # SONUC TABLOSU
         tablo = pd.DataFrame({
